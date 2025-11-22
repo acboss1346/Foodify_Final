@@ -43,6 +43,7 @@ export default function AdminPanel() {
       setCategory("");
       loadFoods(); 
 
+    // eslint-disable-next-line no-unused-vars
     } catch (err) {
       alert("Error adding food. Are you logged in as admin?");
     }
@@ -55,6 +56,7 @@ export default function AdminPanel() {
       alert("Food deleted!");
       loadFoods(); 
 
+    // eslint-disable-next-line no-unused-vars
     } catch (err) {
       alert("Delete failed. Only admin can delete.");
     }
