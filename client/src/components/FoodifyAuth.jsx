@@ -45,6 +45,8 @@ export default function FoodifyAuth() {
       const res = await login(data);
       setUser(res.data.user);
       alert(`Logged in as ${res.data.user.username}`);
+      window.location.href = "/menu";
+      
     } catch (err) {
       setError(err.response?.data?.message || "Invalid credentials.");
     }
@@ -55,6 +57,8 @@ export default function FoodifyAuth() {
       await logout();
       setUser(null);
       alert("Logged out");
+      window.location.href = "/";
+
     } catch {
       setError("Logout failed. Try again.");
     }

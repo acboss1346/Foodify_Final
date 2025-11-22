@@ -6,6 +6,7 @@ export default function AuthForm({ onSignup, onLogin, error }) {
   const [email, setEmail] = useState("");
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("user"); // NEW
 
   return (
     <>
@@ -30,7 +31,7 @@ export default function AuthForm({ onSignup, onLogin, error }) {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            onSignup({ username, email, password });
+            onSignup({ username, email, password, role }); // UPDATED
           }}
         >
           <input
@@ -53,6 +54,23 @@ export default function AuthForm({ onSignup, onLogin, error }) {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+
+          {/* NEW ROLE SELECT */}
+          <select
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            required
+            style={{
+              padding: "12px",
+              marginTop: "10px",
+              borderRadius: "6px",
+              border: "1px solid #ccc",
+              width: "100%",
+            }}
+          >
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+          </select>
 
           {error && <p className="error-message">{error}</p>}
 
