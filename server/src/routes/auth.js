@@ -8,8 +8,7 @@ const prisma = new PrismaClient();
 
 router.post("/signup", async (req, res) => {
   try {
-    const { username, email, password, role } = req.body;
-
+    const { username, email, password, role = "user" } = req.body;
 
     if (!username || !email || !password)
       return res.status(400).json({ message: "All fields required" });
@@ -24,22 +23,22 @@ router.post("/signup", async (req, res) => {
     const hash = await bcrypt.hash(password, 10);
 
     const user = await prisma.user.create({
-    data: { username, email, password: hash, role },
-    select: { id: true, username: true, email: true, role: true },
+      data: { username, email, password: hash, role },
+      select: { id: true, username: true, email: true, role: true },
     });
 
-
-    const token = signToken({ id: user.id, username: user.username });
+    const token = signToken({ id: user.id, username: user.username, role: user.role });
 
     res.cookie("access_token", token, {
       httpOnly: true,
-      sameSite: "none", 
-      secure: true,    
+      sameSite: "none",
+      secure: true,
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     res.status(201).json({ user });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Signup failed" });
   }
 });
