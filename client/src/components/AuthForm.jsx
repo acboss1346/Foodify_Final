@@ -6,21 +6,71 @@ export default function AuthForm({ onSignup, onLogin, error }) {
   const [email, setEmail] = useState("");
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("user"); // NEW
+  const [role, setRole] = useState("user");
+
+  const buttonStyle = {
+    background: "#e5f9f2",
+    color: "#065f46",
+    border: "none",
+    padding: "8px 16px",
+    borderRadius: "6px",
+    fontSize: "15px",
+    fontWeight: 500,
+    cursor: "pointer",
+    transition: "0.2s",
+  };
+
+  const activeButtonStyle = {
+    ...buttonStyle,
+    background: "#10b981",
+    color: "white",
+  };
+
+  const inputStyle = {
+    width: "100%",
+    padding: "12px",
+    borderRadius: "6px",
+    border: "1px solid #d1d5db",
+    margin: "8px 0",
+    fontSize: "15px",
+    boxSizing: "border-box",
+  };
+
+  const submitButtonStyle = {
+    width: "100%",
+    background: "#10b981",
+    border: "none",
+    color: "white",
+    padding: "12px",
+    borderRadius: "6px",
+    fontSize: "16px",
+    marginTop: "14px",
+    cursor: "pointer",
+    transition: "0.2s",
+  };
+
+  const errorMessageStyle = {
+    background: "#fee2e2",
+    color: "#b91c1c",
+    padding: "10px",
+    borderRadius: "6px",
+    textAlign: "center",
+    marginTop: "10px",
+  };
 
   return (
     <>
-      <div className="auth-tabs">
+      <div style={{ display: "flex", gap: "10px", justifyContent: "center", marginBottom: "18px" }}>
         <button
           type="button"
-          className={mode === "signup" ? "active" : ""}
+          style={mode === "signup" ? activeButtonStyle : buttonStyle}
           onClick={() => setMode("signup")}
         >
           Signup
         </button>
         <button
           type="button"
-          className={mode === "login" ? "active" : ""}
+          style={mode === "login" ? activeButtonStyle : buttonStyle}
           onClick={() => setMode("login")}
         >
           Login
@@ -31,7 +81,7 @@ export default function AuthForm({ onSignup, onLogin, error }) {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            onSignup({ username, email, password, role }); // UPDATED
+            onSignup({ username, email, password, role });
           }}
         >
           <input
@@ -39,6 +89,7 @@ export default function AuthForm({ onSignup, onLogin, error }) {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
+            style={inputStyle}
           />
           <input
             placeholder="Email"
@@ -46,6 +97,7 @@ export default function AuthForm({ onSignup, onLogin, error }) {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            style={inputStyle}
           />
           <input
             type="password"
@@ -53,6 +105,7 @@ export default function AuthForm({ onSignup, onLogin, error }) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            style={inputStyle}
           />
 
           {/* NEW ROLE SELECT */}
@@ -66,15 +119,21 @@ export default function AuthForm({ onSignup, onLogin, error }) {
               borderRadius: "6px",
               border: "1px solid #ccc",
               width: "100%",
+              boxSizing: "border-box",
             }}
           >
             <option value="user">User</option>
             <option value="admin">Admin</option>
           </select>
 
-          {error && <p className="error-message">{error}</p>}
+          {error && <p style={errorMessageStyle}>{error}</p>}
 
-          <button type="submit" className="submit-btn">
+          <button
+            type="submit"
+            style={submitButtonStyle}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "#059669")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "#10b981")}
+          >
             Create Account
           </button>
         </form>
@@ -90,6 +149,7 @@ export default function AuthForm({ onSignup, onLogin, error }) {
             value={identifier}
             onChange={(e) => setIdentifier(e.target.value)}
             required
+            style={inputStyle}
           />
           <input
             type="password"
@@ -97,11 +157,17 @@ export default function AuthForm({ onSignup, onLogin, error }) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            style={inputStyle}
           />
 
-          {error && <p className="error-message">{error}</p>}
+          {error && <p style={errorMessageStyle}>{error}</p>}
 
-          <button type="submit" className="submit-btn">
+          <button
+            type="submit"
+            style={submitButtonStyle}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "#059669")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "#10b981")}
+          >
             Login
           </button>
         </form>

@@ -46,6 +46,8 @@ export default function Orders() {
           display: "grid",
           gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
           gap: "24px",
+          maxWidth: "1200px",
+          margin: "0 auto",
         }}
       >
         {orders.map((o) => (

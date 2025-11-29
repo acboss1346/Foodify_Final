@@ -4,6 +4,16 @@ import { Link } from "react-router-dom";
 export default function Navbar({ user, onLogout }) {
   const [open, setOpen] = useState(false);
 
+  // Common link style for hover
+  const linkBaseStyle = {
+    textDecoration: "none",
+    color: "#1f2937",
+    fontWeight: 500,
+    padding: "6px 10px",
+    borderRadius: "6px",
+    transition: "0.25s",
+  };
+
   return (
     <div
       style={{
@@ -44,20 +54,9 @@ export default function Navbar({ user, onLogout }) {
           <Link
             key={item}
             to={`/${item.toLowerCase()}`}
-            style={{
-              textDecoration: "none",
-              color: "#1f2937",
-              fontWeight: 500,
-              padding: "6px 10px",
-              borderRadius: "6px",
-              transition: "0.25s",
-            }}
-            onMouseEnter={(e) =>
-              (e.target.style.color = "#10b981")
-            }
-            onMouseLeave={(e) =>
-              (e.target.style.color = "#1f2937")
-            }
+            style={linkBaseStyle}
+            onMouseEnter={(e) => (e.target.style.color = "#10b981")}
+            onMouseLeave={(e) => (e.target.style.color = "#1f2937")}
           >
             {item}
           </Link>
@@ -77,12 +76,8 @@ export default function Navbar({ user, onLogout }) {
             textDecoration: "none",
             transition: "0.25s",
           }}
-          onMouseEnter={(e) =>
-            (e.target.style.background = "#0c9467")
-          }
-          onMouseLeave={(e) =>
-            (e.target.style.background = "#10b981")
-          }
+          onMouseEnter={(e) => (e.target.style.background = "#0c9467")}
+          onMouseLeave={(e) => (e.target.style.background = "#10b981")}
         >
           Login
         </Link>
@@ -102,12 +97,8 @@ export default function Navbar({ user, onLogout }) {
             transition: "0.25s",
           }}
           onClick={() => setOpen((prev) => !prev)}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.background = "#0c9467")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.background = "#10b981")
-          }
+          onMouseEnter={(e) => (e.currentTarget.style.background = "#0c9467")}
+          onMouseLeave={(e) => (e.currentTarget.style.background = "#10b981")}
         >
           {user.username}
 

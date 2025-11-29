@@ -23,7 +23,6 @@ export default function ProtectedRoute({ user, children }) {
           fontSize: "30px",
           fontWeight: "700",
           color: "#10b981",
-          animation: "fadeIn 0.4s ease",
         }}
       >
         Loading…
