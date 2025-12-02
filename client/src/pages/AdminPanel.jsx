@@ -40,8 +40,9 @@ export default function AdminPanel({ user, onLogout }) {
       try {
         await API.delete(`/foods/${id}`);
         loadFoods();
-      } catch {
-        alert("Delete failed.");
+      } catch (err) {
+        console.error(err);
+        alert(err.response?.data?.message || "Delete failed.");
       }
     }
   };

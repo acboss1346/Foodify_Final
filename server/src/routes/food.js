@@ -47,11 +47,26 @@ router.put("/:id", requireAuth, requireAdmin, async (req, res) => {
 
 // DELETE food (Admin)
 router.delete("/:id", requireAuth, requireAdmin, async (req, res) => {
-  await prisma.foodItem.delete({
-    where: { id: Number(req.params.id) },
-  });
+  try {
+    const id = Number(req.params.id);
 
-  res.json({ message: "Food item deleted" });
+    // 1. Remove from all carts first (Safe to do)
+    await prisma.cart.deleteMany({ where: { foodId: id } });
+
+    // 2. Try to delete the food item
+    await prisma.foodItem.delete({
+      where: { id },
+    });
+
+    res.json({ message: "Food item deleted" });
+  } catch (error) {
+    console.error("Delete error:", error);
+    // Prisma P2003 = Foreign key constraint failed
+    if (error.code === 'P2003') {
+      return res.status(400).json({ message: "Cannot delete: This item is part of past orders." });
+    }
+    res.status(500).json({ message: "Server error during deletion" });
+  }
 });
 
 export default router;
