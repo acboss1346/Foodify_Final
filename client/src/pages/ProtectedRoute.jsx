@@ -4,33 +4,14 @@ import { useEffect, useState } from "react";
 export default function ProtectedRoute({ user, children }) {
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // Smooth transition before deciding access
-    const timer = setTimeout(() => setLoading(false), 300);
-    return () => clearTimeout(timer);
-  }, []);
+  useEffect(() => { const timer = setTimeout(() => setLoading(false), 300); return () => clearTimeout(timer); }, []);
 
-  if (loading) {
-    return (
-      <div
-        style={{
-          height: "100vh",
-          width: "100vw",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "linear-gradient(135deg, #ecfdf5, #ffffff)",
-          fontSize: "30px",
-          fontWeight: "700",
-          color: "#10b981",
-        }}
-      >
-        Loading…
-      </div>
-    );
-  }
+  if (loading) return (
+    <div style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#0b1120", color: "#10b981", fontSize: "24px", fontWeight: "bold" }}>
+      Loading Foodify...
+    </div>
+  );
 
   if (!user) return <Navigate to="/" replace />;
-
   return children;
 }

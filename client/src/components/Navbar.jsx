@@ -1,191 +1,93 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 export default function Navbar({ user, onLogout }) {
   const [open, setOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const location = useLocation();
 
-  // Common link style for hover
-  const linkBaseStyle = {
-    textDecoration: "none",
-    color: "#1f2937",
-    fontWeight: 500,
-    padding: "6px 10px",
-    borderRadius: "6px",
-    transition: "0.25s",
-  };
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
-    <div
-      style={{
-        width: "100%",
-        padding: "14px 28px",
-        background: "linear-gradient(90deg, #ffffff 0%, #e8fff5 100%)",
-        boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        position: "fixed",
-        top: 0,
-        zIndex: 1000,
-      }}
-    >
+    <nav className="navbar">
       {/* LOGO */}
-      <Link
-        to="/"
-        style={{
-          fontSize: "24px",
-          fontWeight: "700",
-          color: "#10b981",
-          textDecoration: "none",
-          transition: "0.2s",
-        }}
-      >
-        Foodify
-      </Link>
+      <Link to="/" className="nav-logo">Foodify</Link>
 
       {/* LINKS */}
-      <div
-        style={{
-          display: "flex",
-          gap: "22px",
-        }}
-      >
+      <div className="nav-links">
         {["Home", "Menu", "Cart"].map((item) => (
           <Link
             key={item}
             to={`/${item.toLowerCase()}`}
-            style={linkBaseStyle}
-            onMouseEnter={(e) => (e.target.style.color = "#10b981")}
-            onMouseLeave={(e) => (e.target.style.color = "#1f2937")}
+            className={`nav-link ${location.pathname === `/${item.toLowerCase()}` ? 'active' : ''}`}
           >
             {item}
           </Link>
         ))}
       </div>
 
-      {/* LOGIN BUTTON (when not logged in) */}
-      {!user && (
-        <Link
-          to="/"
-          style={{
-            padding: "8px 18px",
-            background: "#10b981",
-            color: "white",
-            borderRadius: "20px",
-            fontWeight: 500,
-            textDecoration: "none",
-            transition: "0.25s",
-          }}
-          onMouseEnter={(e) => (e.target.style.background = "#0c9467")}
-          onMouseLeave={(e) => (e.target.style.background = "#10b981")}
-        >
-          Login
-        </Link>
-      )}
-
-      {/* PROFILE DROPDOWN */}
-      {user && (
-        <div
-          style={{
-            position: "relative",
-            cursor: "pointer",
-            padding: "8px 20px",
-            background: "#10b981",
-            borderRadius: "20px",
-            color: "white",
-            fontWeight: 600,
-            transition: "0.25s",
-          }}
-          onClick={() => setOpen((prev) => !prev)}
-          onMouseEnter={(e) => (e.currentTarget.style.background = "#0c9467")}
-          onMouseLeave={(e) => (e.currentTarget.style.background = "#10b981")}
-        >
-          {user.username}
-
-          {/* DROPDOWN PANEL */}
-          <div
-            style={{
-              position: "absolute",
-              top: "45px",
-              right: 0,
-              display: open ? "block" : "none",
-              background: "white",
-              width: "170px",
-              borderRadius: "10px",
-              boxShadow: "0 4px 14px rgba(0,0,0,0.1)",
-              padding: "10px 0",
-              transition: "0.25s",
-            }}
-          >
-            {/* LOGOUT */}
-            <div
-              onClick={onLogout}
-              style={{
-                padding: "10px 14px",
-                cursor: "pointer",
-                color: "#1f2937",
-                transition: "0.2s",
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.background = "#e9fff3";
-                e.target.style.color = "#10b981";
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.background = "white";
-                e.target.style.color = "#1f2937";
-              }}
+      {/* AUTH / USER MENU */}
+      <div className="nav-actions">
+        {!user ? (
+          <Link to="/" className="nav-btn nav-btn-primary">
+            Login
+          </Link>
+        ) : (
+          <div className="user-menu" ref={dropdownRef}>
+            <button
+              className="user-trigger"
+              onClick={() => setOpen(!open)}
             >
-              Logout
-            </div>
+              <span>{user.username}</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </button>
 
-            {/* ORDERS */}
-            <Link
-              to="/orders"
-              style={{
-                display: "block",
-                padding: "10px 14px",
-                textDecoration: "none",
-                color: "#1f2937",
-                transition: "0.2s",
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.background = "#e9fff3";
-                e.target.style.color = "#10b981";
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.background = "white";
-                e.target.style.color = "#1f2937";
-              }}
-            >
-              My Orders
-            </Link>
-
-            {/* ADMIN PANEL */}
-            {user.role === "admin" && (
+            <div className={`dropdown-menu ${open ? 'show' : ''}`}>
               <Link
-                to="/admin"
-                style={{
-                  display: "block",
-                  padding: "10px 14px",
-                  textDecoration: "none",
-                  color: "#1f2937",
-                  transition: "0.2s",
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.background = "#e9fff3";
-                  e.target.style.color = "#10b981";
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.background = "white";
-                  e.target.style.color = "#1f2937";
-                }}
+                to="/orders"
+                className="dropdown-item"
+                onClick={() => setOpen(false)}
               >
-                Admin Panel
+                My Orders
               </Link>
-            )}
+
+              {user.role === "admin" && (
+                <Link
+                  to="/admin"
+                  className="dropdown-item"
+                  onClick={() => setOpen(false)}
+                >
+                  Admin Panel
+                </Link>
+              )}
+
+              <div className="dropdown-divider"></div>
+
+              <button
+                onClick={() => {
+                  onLogout();
+                  setOpen(false);
+                }}
+                className="dropdown-item text-danger"
+                style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none' }}
+              >
+                Logout
+              </button>
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </nav>
   );
 }
