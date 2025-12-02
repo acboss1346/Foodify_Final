@@ -6,7 +6,7 @@ export default function Navbar({ user, onLogout }) {
   const dropdownRef = useRef(null);
   const location = useLocation();
 
-  // Close dropdown when clicking outside
+
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -19,10 +19,7 @@ export default function Navbar({ user, onLogout }) {
 
   return (
     <nav className="navbar">
-      {/* LOGO */}
       <Link to="/" className="nav-logo">Foodify</Link>
-
-      {/* LINKS */}
       <div className="nav-links">
         {["Home", "Menu", "Cart"].map((item) => (
           <Link
@@ -35,7 +32,6 @@ export default function Navbar({ user, onLogout }) {
         ))}
       </div>
 
-      {/* AUTH / USER MENU */}
       <div className="nav-actions">
         {!user ? (
           <Link to="/" className="nav-btn nav-btn-primary">

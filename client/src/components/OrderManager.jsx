@@ -13,7 +13,7 @@ export default function OrderManager() {
     try {
       const res = await API.get("/orders/all");
       setOrders(res.data);
-      // eslint-disable-next-line no-unused-vars
+    // eslint-disable-next-line no-unused-vars
     } catch (err) { console.error("Error fetching orders"); }
     finally { setLoading(false); }
   };

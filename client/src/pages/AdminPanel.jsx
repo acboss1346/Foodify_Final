@@ -64,7 +64,6 @@ export default function AdminPanel({ user, onLogout }) {
 
   return (
     <div className="admin-container">
-      {/* HEADER */}
       <div className="admin-header">
         <h2 className="admin-title">Admin Dashboard</h2>
         <button
@@ -75,7 +74,6 @@ export default function AdminPanel({ user, onLogout }) {
         </button>
       </div>
 
-      {/* TABS */}
       <div className="admin-tabs">
         <button
           onClick={() => setActiveTab('orders')}
@@ -91,12 +89,10 @@ export default function AdminPanel({ user, onLogout }) {
         </button>
       </div>
 
-      {/* CONTENT AREA */}
       {activeTab === 'orders' ? (
         <OrderManager />
       ) : (
         <>
-          {/* ADD FOOD FORM */}
           <div className="add-food-card">
             <h3 className="add-food-title">Add New Item</h3>
             <div className="form-grid">
@@ -126,7 +122,6 @@ export default function AdminPanel({ user, onLogout }) {
             <button onClick={addFood} className="add-btn">Add Item</button>
           </div>
 
-          {/* FOOD LIST */}
           <div className="food-list">
             {foods.map((f) => (
               <div key={f.id} className="food-item">

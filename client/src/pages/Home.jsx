@@ -4,7 +4,6 @@ import heroImage from '../images/hero.png';
 export default function Home() {
   return (
     <div className="home-container">
-      {/* HERO SECTION */}
       <div
         className="hero-section"
         style={{ backgroundImage: `url(${heroImage})` }}
@@ -26,7 +25,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* INFO CARD */}
       <div className="info-card">
         <div className="info-card-highlight"></div>
         <h2 className="mb-4">Hungry but busy? ⚡</h2>
@@ -35,7 +33,7 @@ export default function Home() {
         </p>
       </div>
 
-      {/* FEATURES SECTION */}
+
       <div className="features-section">
         <h2 className="text-center mb-4" style={{ marginBottom: '3rem' }}>Why Students Love Us</h2>
         <div className="features-grid">
