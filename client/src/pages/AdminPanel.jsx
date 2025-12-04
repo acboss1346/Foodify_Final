@@ -13,7 +13,7 @@ export default function AdminPanel({ user, onLogout }) {
 
   const loadFoods = async () => {
     try {
-      const res = await API.get("/foods");
+      const res = await API.get("/foods?limit=1000");
       setFoods(res.data.data || res.data);
     } catch (err) {
       console.error("Error loading foods", err);
