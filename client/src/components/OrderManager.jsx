@@ -13,6 +13,7 @@ export default function OrderManager() {
 
   useEffect(() => {
     fetchOrders();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, status, page]);
 
   const fetchOrders = async () => {
@@ -30,6 +31,7 @@ export default function OrderManager() {
       const res = await API.get(`/orders/all?${params.toString()}`);
       setOrders(res.data.data || []);
       setTotalPages(res.data.meta?.totalPages || 1);
+    // eslint-disable-next-line no-unused-vars
     } catch (err) { console.error("Error fetching orders"); }
     finally { setLoading(false); }
   };
