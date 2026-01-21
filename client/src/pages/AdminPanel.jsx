@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import { API } from "../api";
 import OrderManager from "../components/OrderManager";
+import { useToast } from "../context/ToastContext";
 
 export default function AdminPanel({ user, onLogout }) {
   const [foods, setFoods] = useState([]);
-  const [form, setForm] = useState({ name: "", price: "", category: "" });
+  const [form, setForm] = useState({ name: "", price: "", category: "Snacks" });
   const [activeTab, setActiveTab] = useState('orders');
+  const { addToast } = useToast();
 
   useEffect(() => {
     if (activeTab === 'food') loadFoods();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab]);
 
   const loadFoods = async () => {
@@ -16,22 +19,22 @@ export default function AdminPanel({ user, onLogout }) {
       const res = await API.get("/foods?limit=1000");
       setFoods(res.data.data || res.data);
     } catch (err) {
-      console.error("Error loading foods", err);
+      addToast("Error loading foods", "error");
     }
   };
 
   const addFood = async () => {
     if (!form.name || !form.price || !form.category) {
-      alert("Please fill in all fields.");
+      addToast("Please fill in all fields.", "error");
       return;
     }
     try {
       await API.post("/foods", { ...form, price: Number(form.price) });
-      alert("Food Added Successfully!");
-      setForm({ name: "", price: "", category: "" });
+      addToast("Food Added Successfully! 🍔", "success");
+      setForm({ name: "", price: "", category: "Snacks" });
       loadFoods();
     } catch {
-      alert("Error adding food. Ensure you are logged in as Admin.");
+      addToast("Error adding food. Check permissions.", "error");
     }
   };
 
@@ -39,10 +42,10 @@ export default function AdminPanel({ user, onLogout }) {
     if (window.confirm("Are you sure you want to delete this item?")) {
       try {
         await API.delete(`/foods/${id}`);
+        addToast("Food item deleted.", "info");
         loadFoods();
       } catch (err) {
-        console.error(err);
-        alert(err.response?.data?.message || "Delete failed.");
+        addToast("Delete failed.", "error");
       }
     }
   };
@@ -51,41 +54,53 @@ export default function AdminPanel({ user, onLogout }) {
 
   if (!isAdmin) {
     return (
-      <div className="access-denied">
-        <h2>Access Denied 🔒</h2>
-        <p>User: {user?.username}</p>
-        <p>Role: {user?.role || "None detected"}</p>
-        <button onClick={onLogout} className="relogin-btn">
-          Logout & Relogin
-        </button>
+      <div className="container" style={{ paddingTop: '100px', textAlign: 'center' }}>
+        <div className="glass-card" style={{ padding: '3rem', maxWidth: '500px', margin: '0 auto', borderColor: 'var(--color-error)' }}>
+          <h2 style={{ color: 'var(--color-error)', marginBottom: '1rem' }}>Access Denied 🔒</h2>
+          <p style={{ marginBottom: '2rem' }}>You do not have permission to view this page.</p>
+          <button onClick={onLogout} className="btn btn-secondary">
+            Logout
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="admin-container">
-      <div className="admin-header">
-        <h2 className="admin-title">Admin Dashboard</h2>
+    <div className="container" style={{ paddingTop: '100px', paddingBottom: '4rem', maxWidth: '1000px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
+        <h2 style={{ fontSize: '2.5rem' }}>Admin Dashboard 🛡️</h2>
         <button
           onClick={onLogout}
-          className="admin-logout-btn"
+          className="btn btn-secondary"
+          style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}
         >
           Logout
         </button>
       </div>
 
-      <div className="admin-tabs">
+      <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', borderBottom: 'var(--border-subtle)', paddingBottom: '1rem' }}>
         <button
           onClick={() => setActiveTab('orders')}
-          className={`tab-btn ${activeTab === 'orders' ? 'active' : ''}`}
+          className="btn"
+          style={{
+            background: activeTab === 'orders' ? 'var(--color-primary)' : 'transparent',
+            color: activeTab === 'orders' ? 'white' : 'var(--color-text-muted)',
+            borderRadius: 'var(--radius-md)'
+          }}
         >
-          Orders
+          Manage Orders
         </button>
         <button
           onClick={() => setActiveTab('food')}
-          className={`tab-btn ${activeTab === 'food' ? 'active' : ''}`}
+          className="btn"
+          style={{
+            background: activeTab === 'food' ? 'var(--color-primary)' : 'transparent',
+            color: activeTab === 'food' ? 'white' : 'var(--color-text-muted)',
+            borderRadius: 'var(--radius-md)'
+          }}
         >
-          Menu Items
+          Manage Menu Items
         </button>
       </div>
 
@@ -93,43 +108,46 @@ export default function AdminPanel({ user, onLogout }) {
         <OrderManager />
       ) : (
         <>
-          <div className="add-food-card">
-            <h3 className="add-food-title">Add New Item</h3>
-            <div className="form-grid">
+          <div className="glass-card" style={{ padding: '2rem', marginBottom: '3rem' }}>
+            <h3 style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>Add New Item</h3>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
               <input
-                placeholder="Name"
+                placeholder="Item Name"
                 value={form.name}
                 onChange={e => setForm({ ...form, name: e.target.value })}
-                className="auth-input"
-                style={{ marginBottom: 0 }}
               />
               <input
                 type="number"
-                placeholder="Price"
+                placeholder="Price (₹)"
                 value={form.price}
                 onChange={e => setForm({ ...form, price: e.target.value })}
-                className="auth-input"
-                style={{ marginBottom: 0 }}
               />
-              <input
-                placeholder="Category"
+              <select
                 value={form.category}
                 onChange={e => setForm({ ...form, category: e.target.value })}
-                className="auth-input"
-                style={{ marginBottom: 0 }}
-              />
+                style={{ padding: '0.875rem 1rem', background: 'var(--color-bg-input)', border: 'none', borderRadius: 'var(--radius-md)', color: 'var(--color-text-main)' }}
+              >
+                <option value="Snacks">Snacks</option>
+                <option value="Meals">Meals</option>
+                <option value="Beverages">Beverages</option>
+              </select>
             </div>
-            <button onClick={addFood} className="add-btn">Add Item</button>
+            <button onClick={addFood} className="btn btn-primary" style={{ width: '100%' }}>Add Item to Menu</button>
           </div>
 
-          <div className="food-list">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
             {foods.map((f) => (
-              <div key={f.id} className="food-item">
-                <div className="food-info">
-                  <h4>{f.name}</h4>
-                  <span className="food-meta">{f.category} — <span className="food-price">₹{f.price}</span></span>
+              <div key={f.id} className="glass-card" style={{ padding: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div>
+                  <h4 style={{ fontSize: '1.1rem', marginBottom: '0.25rem' }}>{f.name}</h4>
+                  <p style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)' }}>{f.category} • <span style={{ color: 'var(--color-primary)', fontWeight: 600 }}>₹{f.price}</span></p>
                 </div>
-                <button onClick={() => deleteFood(f.id)} className="delete-btn">Delete</button>
+                <button onClick={() => deleteFood(f.id)}
+                  className="btn btn-secondary"
+                  style={{ color: 'var(--color-error)', borderColor: 'rgba(239, 68, 68, 0.2)', padding: '0.5rem 0.75rem', fontSize: '0.8rem' }}
+                >
+                  Delete
+                </button>
               </div>
             ))}
           </div>

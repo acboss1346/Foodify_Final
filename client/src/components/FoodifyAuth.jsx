@@ -51,17 +51,6 @@ export default function FoodifyAuth({ setUser }) {
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-card">
-        <h1 className="auth-title">
-          Foodify<span style={{ color: "var(--color-success)" }}>.</span>
-        </h1>
-        <p className="auth-subtitle">
-          Smart Food Ordering & Delivery System
-        </p>
-
-        <AuthForm onSignup={handleSignup} onLogin={handleLogin} error={error} />
-      </div>
-    </div>
+    <AuthForm onSignup={handleSignup} onLogin={handleLogin} error={error} />
   );
 }

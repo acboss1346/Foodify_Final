@@ -8,6 +8,7 @@ import Menu from "./pages/Menu";
 import Cart from "./pages/Cart";
 import Orders from "./pages/Orders";
 import AdminPanel from "./pages/AdminPanel";
+import { ToastProvider } from "./context/ToastContext";
 
 import { getUser, logout } from "./api";
 
@@ -46,34 +47,36 @@ export default function App() {
   );
 
   return (
-    <BrowserRouter>
-      {user && <Navbar user={user} onLogout={handleLogout} />}
+    <ToastProvider>
+      <BrowserRouter>
+        {user && <Navbar user={user} onLogout={handleLogout} />}
 
-      <Routes>
-        <Route
-          path="/"
-          element={
-            user ? <Navigate to="/home" replace /> : <FoodifyAuth setUser={setUser} />
-          }
-        />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              user ? <Navigate to="/home" replace /> : <FoodifyAuth setUser={setUser} />
+            }
+          />
 
-        <Route path="/home" element={user ? <Home /> : <Navigate to="/" replace />} />
-        <Route path="/menu" element={user ? <Menu /> : <Navigate to="/" replace />} />
-        <Route path="/cart" element={user ? <Cart /> : <Navigate to="/" replace />} />
-        <Route path="/orders" element={user ? <Orders /> : <Navigate to="/" replace />} />
-        <Route
-          path="/admin"
-          element={
-            user && user.role && user.role.toLowerCase() === "admin" ? (
-              <AdminPanel user={user} onLogout={handleLogout} />
-            ) : (
-              <Navigate to="/home" replace />
-            )
-          }
-        />
+          <Route path="/home" element={user ? <Home /> : <Navigate to="/" replace />} />
+          <Route path="/menu" element={user ? <Menu /> : <Navigate to="/" replace />} />
+          <Route path="/cart" element={user ? <Cart /> : <Navigate to="/" replace />} />
+          <Route path="/orders" element={user ? <Orders /> : <Navigate to="/" replace />} />
+          <Route
+            path="/admin"
+            element={
+              user && user.role && user.role.toLowerCase() === "admin" ? (
+                <AdminPanel user={user} onLogout={handleLogout} />
+              ) : (
+                <Navigate to="/home" replace />
+              )
+            }
+          />
 
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </BrowserRouter>
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </ToastProvider>
   );
 }
