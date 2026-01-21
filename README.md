@@ -4,14 +4,23 @@ Foodify is a modern, full-stack digital food ordering system designed to streaml
 
 ## 🚀 Key Features
 
-*   **User Authentication**: Secure login and signup using JWT and bcrypt. Role-based access control (User/Admin).
-*   **Menu Management**: Admins can easily add, update, and delete food items with images, prices, and categories.
-*   **Smart Cart**: Users can add items to their cart, adjust quantities, and view the total cost before ordering.
+
+*   **User Authentication**: Secure login and signup with a polished, glassmorphism UI.
+*   **Menu Management**: Admins can easily add, update, and delete food items.
+*   **Smart Cart**: Interactive cart with instant feedback and toast notifications.
 *   **Order Management**:
-    *   **Users**: Place orders and track status (Pending → Preparing → Ready → Completed) in real-time.
-    *   **Admins**: View all incoming orders and update their status.
-*   **Search & Filter**: Find food items quickly by category (Snacks, Meals, Drinks) or by name.
-*   **Responsive Design**: Built with TailwindCSS for a seamless experience on both desktop and mobile devices.
+    *   **Users**: Place orders online and pay comfortably at the mess counter.
+    *   **Admins**: Live order queue with real-time status updates.
+*   **Premium UI/UX**:
+    *   **Glassmorphism Design**: Modern, translucent aesthetics with deep animated backgrounds.
+    *   **Smooth Animations**: Fluid transitions for pages and interactions.
+    *   **Skeleton Loading**: Polished loading states for a better user experience.
+*   **Search & Filter**: Find food items quickly by category or name.
+*   **Responsive Design**: Fully responsive layout that works beautifully on all devices.
+    *   **Smooth Animations**: Fluid transitions for pages and interactions.
+    *   **Skeleton Loading**: polished loading states for a better user experience.
+*   **Search & Filter**: Find food items quickly by category or name.
+*   **Responsive Design**: Fully responsive layout that works beautifully on all devices.
 
 ## 🛠️ Tech Stack
 

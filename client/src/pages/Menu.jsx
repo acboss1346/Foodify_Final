@@ -17,7 +17,6 @@ export default function Menu() {
 
   useEffect(() => {
     fetchFood();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, category, sortBy, sortOrder, page]);
 
   const fetchFood = () => {

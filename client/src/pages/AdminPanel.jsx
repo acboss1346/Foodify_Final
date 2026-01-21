@@ -11,7 +11,6 @@ export default function AdminPanel({ user, onLogout }) {
 
   useEffect(() => {
     if (activeTab === 'food') loadFoods();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab]);
 
   const loadFoods = async () => {

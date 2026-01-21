@@ -15,7 +15,6 @@ export default function OrderManager() {
 
   useEffect(() => {
     fetchOrders();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, status, page]);
 
   const fetchOrders = async () => {
@@ -34,7 +33,7 @@ export default function OrderManager() {
       setOrders(res.data.data || []);
       setTotalPages(res.data.meta?.totalPages || 1);
     } catch (err) {
-      // minimal error handling for admin dashboard to prevent spam
+      console.error(err);
     } finally {
       setLoading(false);
     }
