@@ -113,9 +113,9 @@ export default function Navbar({ user, onLogout }) {
                 width: '24px', height: '24px', borderRadius: '50%', background: 'var(--color-primary)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem'
               }}>
-                {user.username.charAt(0).toUpperCase()}
+                {user?.username?.charAt(0).toUpperCase() || "U"}
               </div>
-              <span>{user.username}</span>
+              <span>{user?.username || "User"}</span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                 style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>
                 <path d="M6 9l6 6 6-6" />
